@@ -1,14 +1,21 @@
 import requests
 import os
+from utils import get_time_period
+from models import MetalParams
+import logging
 
-def get_gold_price_history() -> list[dict]:
+logger = logging.getLogger("metal_price_logger")
+
+def get_gold_price_history(params: MetalParams) -> list[dict]:
     url = "https://api.gold-api.com/history"
     api_key = os.getenv("API_KEY")
 
+    start_time, end_time = get_time_period(params.timeperiod)
+    logger.info(f"start time: {start_time} - end time: {end_time}")
     query_params = {
             "symbol" : "XAU",
-            "startTimestamp" : "1767278027",
-            "endTimestamp" : "1770388427",
+            "startTimestamp" : start_time,
+            "endTimestamp" : end_time,
             "groupBy" : "day"
         }
     headers = {
@@ -20,4 +27,3 @@ def get_gold_price_history() -> list[dict]:
     response = r.text
     return response
 
-    #return  [{"day":"2026-01-31 00:00:00","max_price":"4891.399900"},{"day":"2026-01-30 00:00:00","max_price":"5451.200200"},{"day":"2026-01-29 00:00:00","max_price":"5593.899900"},{"day":"2026-01-28 00:00:00","max_price":"5576.899900"},{"day":"2026-01-27 00:00:00","max_price":"5190.600100"},{"day":"2026-01-26 00:00:00","max_price":"5110.200200"},{"day":"2026-01-25 00:00:00","max_price":"5040.200200"},{"day":"2026-01-24 00:00:00","max_price":"4985.100100"},{"day":"2026-01-23 00:00:00","max_price":"4989.600100"},{"day":"2026-01-22 00:00:00","max_price":"4960.500000"},{"day":"2026-01-21 00:00:00","max_price":"4887.399900"},{"day":"2026-01-20 00:00:00","max_price":"4780.500000"},{"day":"2026-01-19 00:00:00","max_price":"4683.000000"},{"day":"2026-01-18 00:00:00","max_price":"4677.500000"},{"day":"2026-01-17 00:00:00","max_price":"4598.000000"},{"day":"2026-01-16 00:00:00","max_price":"4621.200200"},{"day":"2026-01-15 00:00:00","max_price":"4625.000000"},{"day":"2026-01-14 00:00:00","max_price":"4642.200200"},{"day":"2026-01-13 00:00:00","max_price":"4635.000000"},{"day":"2026-01-12 00:00:00","max_price":"4631.100100"},{"day":"2026-01-11 00:00:00","max_price":"4544.700200"},{"day":"2026-01-10 00:00:00","max_price":"4510.799800"},{"day":"2026-01-09 00:00:00","max_price":"4516.399900"},{"day":"2026-01-08 00:00:00","max_price":"4483.600100"},{"day":"2026-01-07 00:00:00","max_price":"4494.899900"},{"day":"2026-01-06 00:00:00","max_price":"4501.600100"},{"day":"2026-01-05 00:00:00","max_price":"4460.299800"},{"day":"2026-01-04 00:00:00","max_price":"4376.799800"},{"day":"2026-01-03 00:00:00","max_price":"4332.299800"},{"day":"2026-01-02 00:00:00","max_price":"4403.299800"},{"day":"2026-01-01 00:00:00","max_price":"4351.665000"},{"day":"2025-12-31 00:00:00","max_price":"4329.600100"}]

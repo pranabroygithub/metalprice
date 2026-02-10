@@ -1,8 +1,9 @@
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.svg';
-
+    import { goto } from '$app/navigation';
+    
 	let { children } = $props();
-	const title = 'Gold price history';
+	const title = 'Metal price history';
 	let prefersDark = $state(true);
 	let isDark = $state(true);
 
@@ -11,6 +12,11 @@
 
 		isDark = value === 'dark';
 		localStorage.setItem('sv:theme', isDark === prefersDark ? 'system' : value);
+	}
+
+	function updateTimePeriod(tp){
+	    console.log("updating time period to: ", tp)
+        goto(`?timeperiod=${tp}`, {keepFocus: true, noScroll: true, invalidateAll: true});
 	}
 
 	$effect(() => {
@@ -28,7 +34,7 @@
 </script>
 
 <svelte:head>
-	<title>--from-playground {title}</title>
+	<title>Metal price history {title}</title>
 
 	<script>
 		{ const theme = localStorage.getItem('sv:theme'); document.documentElement.classList.add( !theme || theme === 'system' ? window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light' : theme ); }
@@ -57,6 +63,16 @@
 	</nav>
 
 	<main class="content">{@render children()}</main>
+	<div>
+	    <ul class="button-row">
+	        <li><button onclick={() => updateTimePeriod('1M')}>1M</button></li>
+	        <li><button onclick={() => updateTimePeriod('6M')}>6M</button></li>
+	        <li><button onclick={() => updateTimePeriod('1Y')}>1Y</button></li>
+	        <li><button onclick={() => updateTimePeriod('3Y')}>3Y</button></li>
+	        <li><button onclick={() => updateTimePeriod('5Y')}>5Y</button></li>
+	        <li><button onclick={() => updateTimePeriod('ALL')}>ALL</button></li>
+	    </ul>
+	</div>
 </div>
 
 <style>
@@ -202,4 +218,12 @@
 	:global(html.dark) .icon {
 		mask-image: url("data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%3e%3cpath%20fill='%23d4d4d4'%20d='M12%2019a1%201%200%200%201%20.993.883L13%2020v1a1%201%200%200%201-1.993.117L11%2021v-1a1%201%200%200%201%201-1zm6.313-2.09.094.083.7.7a1%201%200%200%201-1.32%201.497l-.094-.083-.7-.7a1%201%200%200%201%201.218-1.567l.102.07zm-11.306.083a1%201%200%200%201%20.083%201.32l-.083.094-.7.7a1%201%200%200%201-1.497-1.32l.083-.094.7-.7a1%201%200%200%201%201.414%200zM4%2011a1%201%200%200%201%20.117%201.993L4%2013H3a1%201%200%200%201-.117-1.993L3%2011h1zm17%200a1%201%200%200%201%20.117%201.993L21%2013h-1a1%201%200%200%201-.117-1.993L20%2011h1zM6.213%204.81l.094.083.7.7a1%201%200%200%201-1.32%201.497l-.094-.083-.7-.7A1%201%200%200%201%206.11%204.74l.102.07zm12.894.083a1%201%200%200%201%20.083%201.32l-.083.094-.7.7a1%201%200%200%201-1.497-1.32l.083-.094.7-.7a1%201%200%200%201%201.414%200zM12%202a1%201%200%200%201%20.993.883L13%203v1a1%201%200%200%201-1.993.117L11%204V3a1%201%200%200%201%201-1zm0%205a5%205%200%201%201-4.995%205.217L7%2012l.005-.217A5%205%200%200%201%2012%207z'/%3e%3c/svg%3e");
 	}
+	.button-row {
+    display: flex;       /* Aligns items in a row */
+    list-style: none;    /* Removes bullets */
+    padding: 5px 10px;          /* Removes default indentation */
+    gap: 20px;           /* Adds space between buttons */
+    justify-content: center;
+    font-size: 10px;
+  }
 </style>

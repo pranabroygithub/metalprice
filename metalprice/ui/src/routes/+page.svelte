@@ -6,5 +6,5 @@
 	
 </script>
 <PlaygroundLayout>
-    <App gold_price={data.gold_price} />
+    <App gold_price={data.gold_price} priceOffset={data.priceOffset}/>
 </PlaygroundLayout>

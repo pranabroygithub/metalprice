@@ -5,13 +5,12 @@
 	import AxisX from './AxisX.svelte';
 
     // Receive plot data as prop.
-    let { gold_price = [] } = $props();	
+    let { gold_price = [], priceOffset = 0 } = $props();	
 
     //console.log("Line chart gold_price = " , gold_price)
 
   const width = 1366;
   const height = 500;
-  const priceOffset = 10000;
   
 	const margin = { 
 		top: 10,

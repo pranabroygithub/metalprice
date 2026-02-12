@@ -30,11 +30,10 @@ logging.config.dictConfig(LOGGING_CONFIG)
 logger = logging.getLogger("metal_price_logger")
 
 @app.get("/getgoldpricehistory")
-def get_price_history(params: MetalParams = Query())-> list:
-    return get_gold_price_history(params)
-
-
-@app.get("/getgoldpricehistoryininr")
 def get_gold_price_history_in_inr(params: MetalParams = Query())-> list:
     price_list_per_day = json.loads(get_gold_price_history(params))
-    return get_price_in_inr(price_list_per_day)
+    if params.currency_type == 'usd':
+        return price_list_per_day
+    if params.currency_type == 'inr':
+        return get_price_in_inr(price_list_per_day)
+    return None

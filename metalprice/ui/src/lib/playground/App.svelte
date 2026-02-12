@@ -3,9 +3,9 @@
 	// svelte version: Sebastian Lammers https://vis.social/@seblammers
 
 	import LineChart from './LineChart.svelte';
-    let { gold_price } = $props();	
+    let { gold_price, priceOffset} = $props();	
     //console.log("App.svelte gold price = ", gold_price)
 
 </script>
 
-<LineChart gold_price={gold_price} />
+<LineChart gold_price={gold_price} priceOffset={priceOffset} />

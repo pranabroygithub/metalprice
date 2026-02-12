@@ -2,12 +2,13 @@
 	import favicon from '$lib/assets/favicon.svg';
     import { goto } from '$app/navigation';
     
-	let { children } = $props();
+	let { children , currency_type, timeperiod, metal_type} = $props();
 	const title = 'Metal price history';
 	let prefersDark = $state(true);
 	let isDark = $state(true);
-	let time_period = $state('3Y');
-	let currency_type = $state('inr');
+	let _timeperiod = $state(timeperiod);
+	let _currency_type = $state(currency_type);
+	let _metal_type = $state(metal_type);
 
 	function switchTheme() {
 		const value = isDark ? 'light' : 'dark';
@@ -17,9 +18,10 @@
 	}
 
 	$effect(()=>{
-        console.log("updating time period to: ", time_period)
-        console.log("updating currency type to: ", currency_type)
-        goto(`?timeperiod=${time_period}&currency_type=${currency_type}`, {keepFocus: true, noScroll: true, invalidateAll: true});
+        console.log("updating time period to: ", _timeperiod)
+        console.log("updating currency type to: ", _currency_type)
+        console.log("updating metal type to: ", _metal_type)
+        goto(`?timeperiod=${_timeperiod}&currency_type=${_currency_type}&metal_type=${_metal_type}`, {keepFocus: true, noScroll: true, invalidateAll: true});
 	})
 
 
@@ -54,11 +56,17 @@
 
 			<p class="title">{title}</p>
 		</div>
-		<div class="nav-selection">
-		       <select id="currency" name="currency_type" bind:value={currency_type}>
-                    <option value="inr">INR</option>
-                    <option value="usd">USD</option>
-                </select>
+		<div>
+            <select id="currency" bind:value={_currency_type} class="raised nav-selection">
+                <option value="inr">INR</option>
+                <option value="usd">USD</option>
+            </select>
+		</div>
+		<div>
+            <select id="metal" bind:value={_metal_type} class="raised nav-selection">
+                <option value="XAU">GOLD</option>
+                <option value="XAG">SILVER</option>
+            </select>
 		</div>
 
 		<div class="nav-right">
@@ -75,12 +83,12 @@
 	<main class="content">{@render children()}</main>
 	<div>
 	    <ul class="button-row">
-	        <li><button onclick={() => time_period = '1M'}>1M</button></li>
-	        <li><button onclick={() => time_period = '6M'}>6M</button></li>
-	        <li><button onclick={() => time_period = '1Y'}>1Y</button></li>
-	        <li><button onclick={() => time_period = '3Y'}>3Y</button></li>
-	        <li><button onclick={() => time_period = '5Y'}>5Y</button></li>
-	        <li><button onclick={() => time_period = 'ALL'}>ALL</button></li>
+	        <li><button class="raised theme-toggle" onclick={() => _timeperiod = '1M'}>1M</button></li>
+	        <li><button class="raised theme-toggle" onclick={() => _timeperiod = '6M'}>6M</button></li>
+	        <li><button class="raised theme-toggle" onclick={() => _timeperiod = '1Y'}>1Y</button></li>
+	        <li><button class="raised theme-toggle" onclick={() => _timeperiod = '3Y'}>3Y</button></li>
+	        <li><button class="raised theme-toggle" onclick={() => _timeperiod = '5Y'}>5Y</button></li>
+	        <li><button class="raised theme-toggle" onclick={() => _timeperiod = 'ALL'}>ALL</button></li>
 	    </ul>
 	</div>
 </div>
@@ -239,9 +247,9 @@
     .nav-selection {
         display: flex;
         align-items: center;
-        gap: 20px;
-        padding: 10px 20px;
-        font-size: 20px;
+        gap: 10px;
+        padding: 5px 10px;
+        font-size: 15px;
     }
 
 

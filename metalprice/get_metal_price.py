@@ -6,14 +6,15 @@ import logging
 
 logger = logging.getLogger("metal_price_logger")
 
-def get_gold_price_history(params: MetalParams) -> list[dict]:
+def get_metal_price_history(params: MetalParams) -> list[dict]:
     url = "https://api.gold-api.com/history"
     api_key = os.getenv("API_KEY")
 
     start_time, end_time = get_time_period(params.timeperiod)
+    metal_type = params.metal_type
     logger.info(f"start time: {start_time} - end time: {end_time}")
     query_params = {
-            "symbol" : "XAU",
+            "symbol" : metal_type,
             "startTimestamp" : start_time,
             "endTimestamp" : end_time,
             "groupBy" : "day"

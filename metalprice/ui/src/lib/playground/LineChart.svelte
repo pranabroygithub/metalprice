@@ -5,12 +5,10 @@
 	import AxisX from './AxisX.svelte';
 
     // Receive plot data as prop.
-    let { gold_price = [], priceOffset = 0 } = $props();	
+    let { metal_price = [], priceOffset = 0 } = $props();	
 
-    //console.log("Line chart gold_price = " , gold_price)
-
-  const width = 1366;
-  const height = 500;
+    const width = 1366;
+    const height = 500;
   
 	const margin = { 
 		top: 10,
@@ -20,13 +18,13 @@
 	};
   // Declare the x (horizontal position) scale.
   let xScale = $derived(d3.scaleUtc()
-      .domain(d3.extent(gold_price, d => new Date(d.day)))
+      .domain(d3.extent(metal_price, d => new Date(d.day)))
       .range([margin.left, width - margin.right]));
 
   // Declare the y (vertical position) scale.
  
   let yScale = $derived(d3.scaleLinear()
-      .domain([d3.min(gold_price, d => d.max_price - priceOffset), d3.max(gold_price, d => d.max_price + priceOffset)])
+      .domain([(d3.min(metal_price, d => d.max_price) - priceOffset), (d3.max(metal_price, d => d.max_price) + priceOffset)])
       .rangeRound([height - margin.bottom, margin.top]));
 
   // Declare the line generator.
@@ -53,6 +51,6 @@
 			<path 
 				fill=none
 				stroke="yellow"
-				d={line(gold_price)}/>
+				d={line(metal_price)}/>
 	</g>
 </svg>

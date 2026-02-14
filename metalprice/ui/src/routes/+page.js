@@ -18,7 +18,7 @@ export async function load({ fetch , url }) {
     if(metal_type == 'XAG' && currency_type == 'inr') {priceOffset=1000;}
     if(metal_type == 'XAG' && currency_type == 'usd') {priceOffset=10;}
     if(metal_type == 'XAU' && currency_type == 'inr') {priceOffset=10000;}
-    if(metal_type == 'XAU' && currency_type == 'usd') {priceOffset=500;}
+    if(metal_type == 'XAU' && currency_type == 'usd') {priceOffset=300;}
     const metal_price = await response.json();
     return {
         metal_price: metal_price,

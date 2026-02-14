@@ -3,6 +3,7 @@ import os
 from utils import get_time_period
 from models import MetalParams
 import logging
+import json
 
 logger = logging.getLogger("metal_price_logger")
 
@@ -25,6 +26,5 @@ def get_metal_price_history(params: MetalParams) -> list[dict]:
 
     # call the API
     r = requests.get(url, params=query_params, headers=headers)
-    response = r.text
-    return response
-
+    # converting max_price which are strings into float number
+    return list(map(lambda d: {"day" : d.get("day"), "max_price": float(d.get("max_price"))}, json.loads(r.text)))
